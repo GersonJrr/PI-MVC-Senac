@@ -6,9 +6,9 @@ export default function Navbar() {
       <img src="/logo.png" alt="logo" className="w-[150px] h-[40px]" />
 
       <div className="space-x-4">
-        <Link to="/" className="hover:text-gray-300">Home</Link>
-        <Link to="/cadastrar-cliente" className="hover:text-gray-300">Cadastrar Cliente</Link>
-        <Link to="/contact" className="hover:text-gray-300">Contact</Link>
+        <Link to="/" className="hover:text-gray-900">Home</Link>
+        <Link to="/cadastrar-cliente" className="hover:text-gray-900">Cadastrar Cliente</Link>
+        <Link to="/contact" className="hover:text-gray-900">Contact</Link>
       </div>
     </nav>
   );

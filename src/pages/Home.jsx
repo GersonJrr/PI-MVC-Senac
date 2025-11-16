@@ -1,7 +1,8 @@
 
-import TabelaPedidos from "../components/TabelaPedidos";
 import DashboardCards from "../components/DashboardCards";
 import Navbar from "../components/NavBar";
+import TabelaPedidos from "../components/TabelaPedidos";
+
 
 const pedidosVencidos = [
   { id: 1, cliente: 'João', carro: 'Civic', placa: 'ABC1234', prioridade: 'Alta', previsaoEntrega: '10/11/2025' },
@@ -21,9 +22,8 @@ const pedidosEntregues = [
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <main className="p-8 h-screen flex items-center justify-center bg-[#151D26]">
+    <div className="flex flex-col min-h-screen bg-[#151D26]">
+      <main className="p-8 flex-1 flex items-center justify-center">
         <div className="flex w-full max-w-6xl justify-between">
           <div className="flex-1 flex flex-col gap-1">
             <TabelaPedidos
@@ -48,6 +48,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
+
