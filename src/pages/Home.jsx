@@ -1,6 +1,7 @@
-import Navbar from "../components/Navbar";
+
 import TabelaPedidos from "../components/TabelaPedidos";
 import DashboardCards from "../components/DashboardCards";
+import Navbar from "../components/NavBar";
 
 const pedidosVencidos = [
   { id: 1, cliente: 'João', carro: 'Civic', placa: 'ABC1234', prioridade: 'Alta', previsaoEntrega: '10/11/2025' },
