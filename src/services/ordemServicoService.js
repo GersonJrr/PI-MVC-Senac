@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'http://devcar-env.eba-kt7jixqc.us-east-1.elasticbeanstalk.com/api/OrdemServico';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const criarOrdemServico = async (formData) => {
   try {
