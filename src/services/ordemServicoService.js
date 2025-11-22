@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = 'https://d3n1kza4ijwyd8.cloudfront.net/api/OrdemServico';
 
 export const criarOrdemServico = async (formData) => {
   try {
