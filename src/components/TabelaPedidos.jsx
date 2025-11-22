@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 
-// Componente reutilizável
+
 function TabelaPedidos({ 
   titulo = "Pedidos", 
   icone = "x",
@@ -96,7 +96,6 @@ function TabelaPedidos({
   return (
     <div className="w-full max-w-3xl mx-auto p-4">
       <div className={`bg-gradient-to-b ${colorScheme.from} ${colorScheme.to} rounded-lg shadow-2xl border-2 ${borderColor} overflow-hidden`}>
-        {/* Header */}
         <div className={`${colorScheme.header} px-4 py-3 flex items-center justify-between border-b ${colorScheme.border}`}>
           <div className="flex items-center gap-2">
             <Icon className="w-5 h-5 text-white" />
@@ -104,7 +103,6 @@ function TabelaPedidos({
           </div>
         </div>
 
-        {/* Table Header */}
         <div className={`grid gap-4 px-4 py-3 ${colorScheme.tableHeader} border-b ${colorScheme.tableBorder}`}
              style={{ gridTemplateColumns: `repeat(${colunas.length}, minmax(0, 1fr))` }}>
           {colunas.map((coluna, index) => (
@@ -114,7 +112,6 @@ function TabelaPedidos({
           ))}
         </div>
 
-        {/* Table Body */}
         <div className={`${colorScheme.divide} divide-y`}>
           {dados.length === 0 ? (
             <div className={`px-4 py-8 text-center ${colorScheme.textAlt} text-sm`}>
@@ -136,18 +133,6 @@ function TabelaPedidos({
             ))
           )}
         </div>
-
-        {/* Empty rows */}
-        {dados.length < 5 && (
-          <div className={`${colorScheme.divide} divide-y`}>
-            {Array.from({ length: 5 - dados.length }).map((_, i) => (
-              <div key={`empty-${i}`} className="grid gap-4 px-4 py-3"
-                   style={{ gridTemplateColumns: `repeat(${colunas.length}, minmax(0, 1fr))` }}>
-                <div className="text-transparent text-sm">-</div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

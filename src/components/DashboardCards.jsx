@@ -1,33 +1,32 @@
-
 import React from 'react';
 import { Check, DollarSign, XCircle, Clock } from 'lucide-react';
 
-export default function DashboardCards() {
+export default function DashboardCards({ totalAtrasadas, totalManutencoes, faturamento }) {
   const cards = [
     {
       title: 'Carros entregues',
-      value: '49',
+      value: totalManutencoes - totalAtrasadas,
       icon: Check,
       bgColor: 'bg-blue-700',
       iconBg: 'bg-blue-800'
     },
     {
       title: 'Faturamento',
-      value: 'R$20.000,00',
+      value: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(faturamento),
       icon: DollarSign,
       bgColor: 'bg-green-800',
       iconBg: 'bg-green-900'
     },
     {
       title: 'Manutenções Vencidas',
-      value: '49',
+      value: totalAtrasadas,
       icon: XCircle,
       bgColor: 'bg-red-900',
       iconBg: 'bg-red-950'
     },
     {
       title: 'Manutenções a fazer',
-      value: '49',
+      value: totalManutencoes,
       icon: Clock,
       bgColor: 'bg-yellow-700',
       iconBg: 'bg-yellow-800'

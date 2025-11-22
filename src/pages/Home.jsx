@@ -1,26 +1,58 @@
-
+import React, { useEffect, useState } from "react";
 import DashboardCards from "../components/DashboardCards";
-import Navbar from "../components/NavBar";
 import TabelaPedidos from "../components/TabelaPedidos";
-
-
-const pedidosVencidos = [
-  { id: 1, cliente: 'João', carro: 'Civic', placa: 'ABC1234', prioridade: 'Alta', previsaoEntrega: '10/11/2025' },
-  { id: 2, cliente: 'Maria', carro: 'Corolla', placa: 'XYZ5678', prioridade: 'Média', previsaoEntrega: '12/11/2025' },
-  { id: 6, cliente: 'Maria', carro: 'Corolla', placa: 'XYZ5678', prioridade: 'Média', previsaoEntrega: '12/11/2025' },
-  { id: 6, cliente: 'Maria', carro: 'Corolla', placa: 'XYZ5678', prioridade: 'Média', previsaoEntrega: '12/11/2025' },
-  { id: 6, cliente: 'Maria', carro: 'Corolla', placa: 'XYZ5678', prioridade: 'Média', previsaoEntrega: '12/11/2025' },
-];
-
-const pedidosEntregues = [
-  { id: 3, cliente: 'Carlos', carro: 'Golf', placa: 'DEF4321',previsaoEntrega: '12/11/2025' },
-  { id: 4, cliente: 'Carlos', carro: 'Golf', placa: 'DEF4321',previsaoEntrega: '12/11/2025'},
-  { id: 5, cliente: 'Carlos', carro: 'Golf', placa: 'DEF4321',previsaoEntrega: '12/11/2025' },
-  { id: 5, cliente: 'Carlos', carro: 'Golf', placa: 'DEF4321',previsaoEntrega: '12/11/2025' },
-  { id: 5, cliente: 'Carlos', carro: 'Golf', placa: 'DEF4321',previsaoEntrega: '12/11/2025' },
-];
+import { listarOrdensServico } from "../services/ordemServicoService";
 
 export default function Home() {
+  const [pedidosVencidos, setPedidosVencidos] = useState([]);
+  const [pedidosEntregues, setPedidosEntregues] = useState([]);
+  const [dashboardData, setDashboardData] = useState({
+    totalAtrasadas: 0,
+    totalManutencoes: 0,
+    faturamento: 0,
+  });
+
+  useEffect(() => {
+    const fetchOrdens = async () => {
+      try {
+        const dados = await listarOrdensServico();
+        const hoje = new Date();
+
+        const mapData = (item) => ({
+          id: item.id,
+          cliente: item.nome,
+          carro: item.modelo,
+          placa: item.placa,
+          prioridade: item.prioridade || "-",
+          previsaoEntrega: new Date(item.previsaoEntrega).toLocaleDateString("pt-BR")
+        });
+
+        const atrasadas = dados
+          .filter((item) => new Date(item.previsaoEntrega) < hoje)
+          .map(mapData);
+
+        const noPrazo = dados
+          .filter((item) => new Date(item.previsaoEntrega) >= hoje)
+          .map(mapData);
+
+        setPedidosVencidos(atrasadas);
+        setPedidosEntregues(noPrazo);
+
+  
+        const totalAtrasadas = dados.filter(item => new Date(item.previsaoEntrega) < hoje).length;
+        const totalManutencoes = dados.length;
+        const faturamento = dados.reduce((acc, item) => acc + (item.valorTotal || 0), 0);
+
+        setDashboardData({ totalAtrasadas, totalManutencoes, faturamento });
+
+      } catch (error) {
+        console.error("Erro ao buscar ordens:", error);
+      }
+    };
+
+    fetchOrdens();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#151D26]">
       <main className="p-8 flex-1 flex items-center justify-center">
@@ -31,24 +63,27 @@ export default function Home() {
               icone="x"
               cor="red"
               bordaCor="blue"
-              colunas={['ID', 'Cliente', 'Carro', 'Placa', 'Prioridade', 'Previsão de entrega']}
+              colunas={["ID", "Cliente", "Carro", "Placa", "Prioridade", "Previsão de entrega"]}
               dados={pedidosVencidos}
             />
             <TabelaPedidos
-              titulo="Manuteções no prazo"
+              titulo="Manutenções no prazo"
               icone="check"
               cor="green"
               bordaCor="green"
-              colunas={['ID', 'Cliente', 'Carro', 'Placa', 'Previsão de entrega']}
+              colunas={["ID", "Cliente", "Carro", "Placa", "Prioridade", "Previsão de entrega"]}
               dados={pedidosEntregues}
             />
           </div>
           <div className="flex-1 flex items-center justify-center">
-            <DashboardCards/>
+            <DashboardCards
+              totalAtrasadas={dashboardData.totalAtrasadas}
+              totalManutencoes={dashboardData.totalManutencoes}
+              faturamento={dashboardData.faturamento}
+            />
           </div>
         </div>
       </main>
     </div>
   );
 }
-
